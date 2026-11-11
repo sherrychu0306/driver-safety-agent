@@ -4,5 +4,8 @@
   "scripts": {
     "test": "node scripts/run-reference-tests.mjs",
     "check:media": "node scripts/check-media.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.65.0"
   }
 }
