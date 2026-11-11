@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The drive — scenario 1: the notification</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app" data-screen="beat" data-phase="watch">
+
+    <!-- ============ SCENARIO 1 — THE NOTIFICATION ============ -->
+    <section class="screen screen--beat" id="screenBeat1">
+
+        <header class="beat-head">
+            <div class="beat-head__id">
+                <h2>The notification</h2>
+                <p class="beat-head__instruction">Watch the clip all the way through. Then choose the correct response.</p>
+            </div>
+        </header>
+
+        <div class="beat-body">
+
+            <!-- ---- The stage: dash-cam clip / frozen frame ---- -->
+            <figure class="stage" id="stage">
+                <div class="stage__frame">
+                    <video class="stage__video" id="clip" preload="metadata" playsinline
+                           aria-label="Forward-facing dash-cam clip: driver distracted by phone">
+                        <source src="video/driver-distracted-by-phone.mp4" type="video/mp4">
+                    </video>
+
+                    <!-- Fallback cab scene, used when the clip is not present -->
+                    <svg class="scene" id="scene" viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg"
+                         role="img" aria-label="Driver's view from a work vehicle: road ahead, steering wheel, and a phone mounted to the right of the wheel">
+                        <defs>
+                            <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+                                <stop class="stop-sky-a" offset="0"></stop>
+                                <stop class="stop-sky-b" offset="1"></stop>
+                            </linearGradient>
+                            <linearGradient id="roadGrad" x1="0" y1="0" x2="0" y2="1">
+                                <stop class="stop-road-a" offset="0"></stop>
+                                <stop class="stop-road-b" offset="1"></stop>
+                            </linearGradient>
+                            <radialGradient id="glowGrad">
+                                <stop class="stop-glow-a" offset="0"></stop>
+                                <stop class="stop-glow-b" offset="1"></stop>
+                            </radialGradient>
+                            <clipPath id="glassClip">
+                                <path d="M92 34 H868 V344 H92 Z"></path>
+                            </clipPath>
+                        </defs>
+
+                        <!-- through the windshield -->
+                        <g clip-path="url(#glassClip)">
+                            <rect class="sky" x="92" y="34" width="776" height="176"></rect>
+                            <polygon class="road" points="330,210 630,210 1010,344 -50,344"></polygon>
+                            <polygon class="road-edge" points="330,210 344,210 40,344 -50,344"></polygon>
+                            <polygon class="road-edge" points="616,210 630,210 1010,344 920,344"></polygon>
+
+                            <g class="lanes" id="lanes">
+                                <polygon class="lane" points="474,214 486,214 488,232 472,232"></polygon>
+                                <polygon class="lane" points="470,246 490,246 494,276 466,276"></polygon>
+                                <polygon class="lane" points="464,296 496,296 504,344 456,344"></polygon>
+                            </g>
+
+                            <!-- box truck well ahead, centre lane -->
+                            <g class="truck">
+                                <rect x="556" y="176" width="54" height="38" rx="3"></rect>
+                                <rect class="truck-cab" x="560" y="196" width="46" height="18" rx="2"></rect>
+                                <rect class="lamp-red" x="562" y="208" width="7" height="5" rx="1"></rect>
+                                <rect class="lamp-red" x="597" y="208" width="7" height="5" rx="1"></rect>
+                            </g>
+
+                            <!-- shoulder sign -->
+                            <g class="sign">
+                                <rect x="806" y="150" width="4" height="62"></rect>
+                                <rect class="sign-face" x="782" y="122" width="52" height="34" rx="4"></rect>
+                            </g>
+                        </g>
+
+                        <!-- cab interior -->
+                        <path class="pillar" d="M0 0 H120 L92 344 H0 Z"></path>
+                        <path class="pillar" d="M960 0 H840 L868 344 H960 Z"></path>
+                        <rect class="header-trim" x="0" y="0" width="960" height="36"></rect>
+                        <path class="dash" d="M0 336 C 240 300, 720 300, 960 336 L960 540 H0 Z"></path>
+                        <path class="dash-lip" d="M0 336 C 240 300, 720 300, 960 336"></path>
+
+                        <!-- steering wheel -->
+                        <g class="wheel">
+                            <circle cx="352" cy="556" r="146"></circle>
+                            <circle class="wheel-inner" cx="352" cy="556" r="104"></circle>
+                        </g>
+
+                        <!-- mounted phone, right of the wheel -->
+                        <g class="phone" id="phone">
+                            <ellipse class="phone-glow" cx="672" cy="446" rx="150" ry="120"></ellipse>
+                            <rect class="phone-arm" x="664" y="470" width="16" height="70" rx="6"></rect>
+                            <rect class="phone-body" x="596" y="360" width="152" height="122" rx="14"></rect>
+                            <rect class="phone-screen" x="606" y="370" width="132" height="102" rx="9"></rect>
+                            <g class="phone-map">
+                                <polyline points="618,462 646,424 668,436 700,392 728,384"></polyline>
+                            </g>
+                            <g class="notif" id="notif">
+                                <rect class="notif-card" x="606" y="370" width="132" height="42" rx="9"></rect>
+                                <rect class="notif-accent" x="606" y="370" width="6" height="42"></rect>
+                                <rect class="notif-line" x="622" y="380" width="66" height="7" rx="3"></rect>
+                                <rect class="notif-line notif-line--short" x="622" y="393" width="92" height="7" rx="3"></rect>
+                            </g>
+                        </g>
+                    </svg>
+
+                    <div class="stage__chrome">
+                        <button type="button" class="stage__expand" id="expandBtn" aria-label="Expand the clip to full screen">
+                            <svg class="stage__expand-in" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M4 10V4h6M20 14v6h-6M4 4l7 7M20 20l-7-7"></path>
+                            </svg>
+                            <svg class="stage__expand-out" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M10 4v6H4M14 20v-6h6M3 3l7 7M21 21l-7-7"></path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="stage__progress" id="stageProgress" role="slider" tabindex="-1"
+                         aria-label="Video progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-disabled="true">
+                        <div class="stage__progress-fill" id="stageProgressFill"></div>
+                    </div>
+
+                    <button type="button" class="stage__replay" id="replayBtn" aria-label="Replay the clip">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M20 11a8 8 0 0 0-14.9-4M5 3v4h4M4 13a8 8 0 0 0 14.9 4M19 21v-4h-4"></path>
+                        </svg>
+                        <span>Replay clip</span>
+                    </button>
+
+                    <button type="button" class="stage__play" id="playBtn" aria-label="Play the clip">
+                        <svg viewBox="0 0 40 40" aria-hidden="true"><polygon points="14,10 30,20 14,30"></polygon></svg>
+                        <span class="stage__play-label">Play the clip</span>
+                    </button>
+                </div>
+                <figcaption class="stage__cap" id="stageCap">Traffic is moving. Watch what happens.</figcaption>
+                </figure>
+
+            <!-- ---- Setup copy, shown while watching ---- -->
+            <div class="panel panel--setup" id="setupPanel">
+                <p class="setup-line">You’re 40 minutes into your drive with one stop left. Traffic is moving, and your phone is mounted to the right of the wheel.</p>
+                <p class="setup-buzz">It buzzes.</p>
+            </div>
+
+            <!-- ---- The decision ---- -->
+            <div class="panel panel--reflect" id="reflectPanel" hidden>
+                <h3 class="question" id="questionText">What should you do to prevent the same accident from happening?</h3>
+                <div class="options" id="options" role="radiogroup" aria-labelledby="questionText">
+                    <button type="button" class="option" role="radio" aria-checked="false" data-key="A">
+                        <span class="option__key">A</span>
+                        <span class="option__text">Glance at the screen now, while the road ahead is clear.</span>
+                        <span class="option__mark" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="option" role="radio" aria-checked="false" data-key="B">
+                        <span class="option__key">B</span>
+                        <span class="option__text">Leave it. Check at the next stop, stationary and in park.</span>
+                        <span class="option__mark" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="option" role="radio" aria-checked="false" data-key="C">
+                        <span class="option__key">C</span>
+                        <span class="option__text">Read it at the upcoming red light while creeping forward in the queue.</span>
+                        <span class="option__mark" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="option" role="radio" aria-checked="false" data-key="D">
+                        <span class="option__key">D</span>
+                        <span class="option__text">Reply using voice-to-text so your eyes stay up.</span>
+                        <span class="option__mark" aria-hidden="true"></span>
+                    </button>
+                </div>
+
+                <div class="reflect-foot">
+                    <div class="feedback" id="feedback" role="status" aria-live="polite">
+                        <span class="feedback__text" id="feedbackText"></span>
+                    </div>
+                    <div class="reflect-actions">
+                        <button type="button" class="btn--go" id="takeawayBtn" hidden>See final message</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <div class="completion-overlay" id="completionOverlay">
+        <h2>Scenario complete</h2>
+        <p class="takeaway-body">A quick glance can still take your eyes and mind off a roadway that is
+            changing in real time. Treat every notification as something to handle only when the vehicle is
+            stationary, in park, and safely out of traffic.</p>
+        <button type="button" class="btn-secondary" id="overlayDismiss">Review the scenario</button>
+    </div>
+</div>
+    <script src="state-store.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

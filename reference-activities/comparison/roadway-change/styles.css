@@ -1,0 +1,1035 @@
+/* ===== FONTS — VIVINT ===== */
+@font-face {
+    font-family: 'VivintCircular';
+    src: url('fonts/vivintCircular-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'VivintCircular';
+    src: url('fonts/vivintCircular-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ===== BRAND VARIABLES — VIVINT ===== */
+:root {
+    --bg-color: #F3EFE8;
+    --primary-color: #00A073;
+    --primary-deep: #007A58;
+    --emphasis-color: #FF8736;
+    --glow-color: #00A073;
+
+    --text-color: #14201F;
+    --text-muted: #566766;
+    --card-bg: #FBF9F5;
+    --stage-bg: #0B1614;
+    --error-color: #C4362F;
+    --correct-color: #00A073;
+    --font-main: 'VivintCircular', sans-serif;
+
+    /* Precomputed tints — emphasis (#FF8736) */
+    --emphasis-tint: rgba(255, 135, 54, 0.14);
+    --emphasis-light: rgba(255, 135, 54, 0.08);
+    --emphasis-shadow: rgba(255, 135, 54, 0.38);
+
+    /* Precomputed tints — primary (#00A073) */
+    --primary-tint: rgba(0, 160, 115, 0.08);
+    --primary-shadow: rgba(0, 160, 115, 0.20);
+    --border-muted: rgba(0, 160, 115, 0.22);
+
+    --overlay-bg: rgba(243, 239, 232, 0.97);
+    --primary-muted: rgba(20, 32, 31, 0.12);
+    --error-tint: rgba(196, 54, 47, 0.08);
+}
+
+/* ===== SHARED DESIGN TOKENS ===== */
+:root {
+    --space-xs: 8px;
+    --space-sm: 16px;
+    --space-md: 24px;
+    --space-lg: 32px;
+    --space-xl: 48px;
+
+    --shadow-rest: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.12);
+    --shadow-active: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-stage: 0 18px 48px rgba(11, 22, 20, 0.28);
+
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-pill: 20px;
+
+    --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --duration-fast: 150ms;
+    --duration-med: 300ms;
+    --duration-slow: 400ms;
+}
+
+/* ===== RESET ===== */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    color: var(--text-color);
+    font-family: var(--font-main);
+    font-size: 24px;
+    line-height: 1.4;
+    -webkit-font-smoothing: antialiased;
+}
+
+#app {
+    width: 100%;
+    max-width: 1560px;
+    /* 720px = header (~100px) + the tallest 3:2 frame the stage column can
+       hold + a little slack. Anything taller just adds dead space, because
+       sizeCompare() caps the frame on width, not height. */
+    height: 100%;
+    max-height: 720px;
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0 60px;
+}
+
+[hidden] { display: none !important; }
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ===== TYPOGRAPHY ===== */
+h1, h2, h3 { font-family: var(--font-main); font-weight: 700; }
+
+h1 {
+    font-size: 34px;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    color: var(--text-color);
+}
+
+/* ===== HEAD ===== */
+.check-head {
+    flex: none;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border-muted);
+    margin-bottom: 20px;
+}
+
+/* Grows into the space left of the meter so the instruction line, the widest
+   thing in the header, can sit on a single line. */
+.check-head__id {
+    text-align: left;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.check-head__instruction {
+    font-size: 24px;
+    line-height: 1.3;
+    color: var(--text-muted);
+    margin-top: 10px;
+    white-space: nowrap;
+}
+
+.check-head__meter {
+    flex: none;
+    width: 240px;
+    text-align: right;
+}
+
+/* The overview is read-only — there is nothing to count yet. */
+#app[data-mode="intro"] .check-head__meter { display: none; }
+
+.count {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-end;
+    gap: 10px;
+    line-height: 1;
+}
+
+.count__num {
+    font-size: 34px;
+    font-weight: 700;
+    color: var(--primary-color);
+    letter-spacing: -0.02em;
+}
+
+.count__of {
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 8px;
+    background: var(--primary-muted);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 10px 0 0;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--emphasis-color);
+    border-radius: 4px;
+    transition: width var(--duration-med) var(--ease-spring);
+}
+
+/* While the handle is under the pointer the bar tracks it frame by frame —
+   a 300ms ease would lag behind the drag. */
+#app.is-dragging .progress-bar-fill { transition: none; }
+
+/* ===== BODY GRID ===== */
+.check-body {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1fr 500px;
+    gap: var(--space-lg);
+    align-items: stretch;
+}
+
+/* ===== STAGE ===== */
+.photo-stage {
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ===== STAGE: THE FOUR CHANGES (overview) ===== */
+.type-grid {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: var(--space-sm);
+    align-content: center;
+}
+
+/* Read-only on this screen: no hover lift, no pressed state, no check mark. */
+.type-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 10px;
+    min-height: 0;
+    padding: var(--space-md);
+    text-align: left;
+    background: #FFFFFF;
+    border: 2px solid var(--border-muted);
+    border-left: 4px solid var(--emphasis-color);
+    border-radius: var(--radius-md);
+    color: var(--text-color);
+    font-family: var(--font-main);
+}
+
+.type-card__icon {
+    width: 44px;
+    height: 44px;
+    flex: none;
+    color: var(--primary-color);
+}
+
+.type-card__icon svg { width: 100%; height: 100%; display: block; }
+
+.type-card__line {
+    font-size: 21px;
+    line-height: 1.25;
+    color: var(--text-color);
+}
+
+/* ===== STAGE: THE BEFORE / AFTER COMPARISON ===== */
+/* The frame's width/height are set in px by sizeCompare() in script.js — the
+   largest 3:2 box that fits .photo-stage. --pos is the wipe position, 0-100. */
+.compare {
+    --pos: 0%;
+    position: relative;
+    flex: none;
+    background: var(--stage-bg);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    /* the drag must not scroll the slide or trigger browser pan/zoom */
+    touch-action: none;
+    cursor: ew-resize;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.compare.scene-enter { animation: sceneIn 420ms var(--ease-out) both; }
+
+.compare__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
+}
+
+/* The After scene sits on top of Before and is revealed from the left edge
+   out to the handle, so dragging right wipes the later moment into view. */
+.compare__after {
+    position: absolute;
+    inset: 0;
+    clip-path: inset(0 calc(100% - var(--pos)) 0 0);
+    background: var(--stage-bg);
+}
+
+/* Shown in place of a photo until a real file lands in img/. Names the file
+   the author needs to supply, what it should show, and the target size. */
+.photo-slot {
+    position: absolute;
+    inset: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: var(--space-md);
+    text-align: center;
+    border: 2px dashed var(--emphasis-color);
+    border-radius: var(--radius-sm);
+    color: #FFFFFF;
+}
+
+/* So the two placeholder frames read as different moments while the real
+   photos are still missing — and sit low in the frame, so the Before text
+   behind them isn't overlapped into mush as the wipe crosses it. */
+.photo-slot--after {
+    background: rgba(0, 160, 115, 0.35);
+    border-color: #FFFFFF;
+    justify-content: flex-end;
+}
+
+.photo-slot__name {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--emphasis-color);
+    letter-spacing: 0.04em;
+}
+
+.photo-slot--after .photo-slot__name { color: #FFFFFF; }
+
+.photo-slot__desc { font-size: 21px; line-height: 1.3; max-width: 30ch; }
+
+.photo-slot__size {
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: 0.14em;
+    color: rgba(255, 255, 255, 0.62);
+}
+
+.compare__label {
+    position: absolute;
+    top: var(--space-sm);
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    font-size: 17px;
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: 0.1em;
+    pointer-events: none;
+}
+
+/* Before holds the right-hand side — the part not yet wiped away. */
+.compare__label--before {
+    right: var(--space-sm);
+    background: rgba(11, 22, 20, 0.78);
+    color: #FFFFFF;
+}
+
+/* After rides the revealed left-hand side and fades up with it. */
+.compare__label--after {
+    left: var(--space-sm);
+    background: var(--emphasis-color);
+    color: #14201F;
+    opacity: 0;
+    transition: opacity var(--duration-med) var(--ease-out);
+}
+
+.compare.is-revealing .compare__label--after { opacity: 1; }
+
+/* ===== THE SEAM AND ITS HANDLE ===== */
+.compare__seam {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--pos);
+    width: 4px;
+    margin-left: -2px;
+    background: #FFFFFF;
+    box-shadow: 0 0 0 1px rgba(11, 22, 20, 0.28);
+    pointer-events: none;
+}
+
+/* The handle rides the seam but is clamped a handle-radius inside the frame,
+   which has overflow:hidden — pinned exactly to the seam it would be sliced in
+   half at 0 and 100, and 0 is where the learner first reaches for it. */
+.compare__handle {
+    position: absolute;
+    top: 50%;
+    left: clamp(36px, var(--pos), calc(100% - 36px));
+    transform: translate(-50%, -50%);
+    width: 64px;
+    height: 64px;
+    min-height: 0;
+    padding: 0;
+    border-radius: 50%;
+    border: 3px solid var(--primary-color);
+    background: #FFFFFF;
+    box-shadow: 0 4px 16px rgba(11, 22, 20, 0.35);
+    cursor: grab;
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform var(--duration-fast) var(--ease-out),
+                box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.compare__handle:active { cursor: grabbing; }
+
+/* The shared button rule animates transform on hover; the handle is centred
+   with transform, so it opts out and scales from its own centred origin. */
+@media (hover: hover) {
+    .compare__handle:hover {
+        transform: translate(-50%, -50%) scale(1.06);
+        box-shadow: 0 6px 20px rgba(11, 22, 20, 0.42);
+    }
+}
+
+#app.is-dragging .compare__handle { transition: none; }
+
+/* the two chevrons that say "this drags sideways" */
+.compare__handle__arrows {
+    position: relative;
+    display: block;
+    width: 30px;
+    height: 16px;
+}
+
+.compare__handle__arrows::before,
+.compare__handle__arrows::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    width: 11px;
+    height: 11px;
+    border-top: 3px solid var(--primary-color);
+    border-right: 3px solid var(--primary-color);
+}
+
+.compare__handle__arrows::before { left: 0; transform: rotate(-135deg); }
+.compare__handle__arrows::after { right: 0; transform: rotate(45deg); }
+
+/* One nudge if the handle is still untouched after a few seconds — the
+   affordance has to teach itself. */
+.compare__handle.is-nudging { animation: nudge 1.45s var(--ease-out) 2; }
+
+/* ===== THE FOUR PINS ON THE AFTER SCENE ===== */
+.change-pins {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.change-pin {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--emphasis-color);
+    border: 3px solid #FFFFFF;
+    box-shadow: 0 2px 10px rgba(11, 22, 20, 0.45);
+    color: #14201F;
+    font-size: 20px;
+    font-weight: 700;
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* pinIn, not popIn: the pin is centred with transform, so its keyframes have
+   to carry the translate or it jumps to the corner while animating. */
+.change-pin.is-visible {
+    opacity: 1;
+    visibility: visible;
+    animation: pinIn 0.35s var(--ease-spring) both;
+}
+
+/* ===== AUTHORING: POSITION PICKER ===== */
+.position-picker {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    cursor: crosshair;
+    background: rgba(0, 0, 0, 0.08);
+}
+
+.position-picker__points {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.position-picker__point {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid #FFFFFF;
+    border-radius: 50%;
+    background: var(--emphasis-color);
+    color: var(--text-color);
+    font-size: 19px;
+    font-weight: 700;
+    box-shadow: 0 2px 10px rgba(11, 22, 20, 0.45);
+}
+
+.position-picker__toolbar {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: var(--radius-sm);
+    background: rgba(11, 22, 20, 0.92);
+    color: #FFFFFF;
+    cursor: default;
+    pointer-events: auto;
+}
+
+.position-picker__toolbar strong,
+.position-picker__count {
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.position-picker__count { color: rgba(255, 255, 255, 0.72); }
+
+.position-picker__instruction {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    color: var(--emphasis-color);
+    font-size: 14px;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.position-picker__toolbar button {
+    min-height: 34px;
+    padding: 4px 10px;
+    font-size: 14px;
+    border-radius: 6px;
+}
+
+.position-picker__copy { margin-left: auto; }
+
+.position-picker__undo:disabled,
+.position-picker__copy:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+}
+
+.position-picker__close {
+    padding: 0 8px !important;
+    font-size: 22px !important;
+    line-height: 1;
+    background: transparent;
+}
+
+.position-picker__output {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    width: 100%;
+    height: 76px;
+    padding: 8px;
+    resize: none;
+    border: 0;
+    border-radius: 6px;
+    background: rgba(11, 22, 20, 0.92);
+    color: #FFFFFF;
+    font: 13px/1.35 var(--font-main);
+}
+
+.is-position-picker-active .compare__handle,
+.is-position-picker-active .compare__seam {
+    visibility: hidden;
+}
+
+/* Authoring coordinates should be chosen against the final scene, while the
+   picker remains separate from the learner's slider position. */
+.is-position-picker-active .compare__after {
+    clip-path: inset(0 0 0 0);
+}
+
+/* ===== SIDE PANEL ===== */
+.panel {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    padding: var(--space-md);
+    background: var(--card-bg);
+    border-radius: var(--radius-md);
+    border-top: 4px solid var(--primary-color);
+    overflow: hidden;
+    box-shadow: var(--primary-shadow) 0px 2px 8px 0px;
+    /* Fills its grid row rather than being pinned to the frame's height: at
+       1024px the frame is short enough that a pinned panel clipped the fourth
+       row. The comparison stays centred beside it. */
+    align-self: stretch;
+}
+
+.panel__view {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    flex: 1;
+    animation: fadeInUp var(--duration-med) var(--ease-out) both;
+}
+
+.panel__lead {
+    font-size: 22px;
+    line-height: 1.32;
+    margin-bottom: var(--space-md);
+}
+
+.panel .btn--go { margin-top: var(--space-md); align-self: flex-start; }
+
+/* ===== BACK / CONTINUE ROW ===== */
+.panel__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-top: var(--space-md);
+}
+
+.panel .panel__actions .btn--go {
+    margin-top: 0;
+    margin-left: auto;
+    align-self: auto;
+}
+
+/* ===== THE CHANGE LIST (comparison state) ===== */
+.change-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    min-height: 0;
+    /* gutter so the scroll container can't clip borders, shadows or the pop */
+    padding: 6px 10px;
+    margin: -6px -10px;
+}
+
+.change-item {
+    display: grid;
+    grid-template-columns: 34px 1fr 24px;
+    align-items: center;
+    gap: 12px;
+    flex: none;
+    padding: 10px 12px;
+    background: #FFFFFF;
+    border: 2px solid var(--border-muted);
+    border-left: 4px solid var(--primary-muted);
+    border-radius: var(--radius-sm);
+    font-size: 19px;
+    line-height: 1.25;
+    color: var(--text-muted);
+    transition: border-color var(--duration-med) var(--ease-out),
+                background-color var(--duration-med) var(--ease-out),
+                color var(--duration-med) var(--ease-out);
+}
+
+.change-item__num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--card-bg);
+    border: 2px solid var(--border-muted);
+    color: var(--text-muted);
+    font-size: 17px;
+    font-weight: 700;
+    transition: background-color var(--duration-med) var(--ease-out),
+                border-color var(--duration-med) var(--ease-out),
+                color var(--duration-med) var(--ease-out);
+}
+
+.change-item__mark {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    color: var(--correct-color);
+    opacity: 0;
+    transition: opacity var(--duration-med) var(--ease-out);
+}
+
+.change-item.is-revealed {
+    border-color: var(--border-muted);
+    border-left-color: var(--emphasis-color);
+    background: var(--primary-tint);
+    color: var(--text-color);
+    animation: pop 320ms var(--ease-spring);
+}
+
+.change-item.is-revealed .change-item__num {
+    background: var(--emphasis-color);
+    border-color: var(--emphasis-color);
+    color: #14201F;
+}
+
+.change-item.is-revealed .change-item__mark { opacity: 1; }
+
+/* ===== BUTTONS ===== */
+button, .btn {
+    font-family: var(--font-main);
+    font-size: 20px;
+    font-weight: 700;
+    padding: var(--space-sm) var(--space-lg);
+    min-height: 56px;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    background-color: var(--primary-color);
+    color: #fff;
+    transition: transform var(--duration-fast) var(--ease-out),
+                box-shadow var(--duration-fast) var(--ease-out),
+                background-color var(--duration-fast) var(--ease-out);
+}
+
+@media (hover: hover) {
+    button:hover, .btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+}
+
+button:active, .btn:active { transform: translateY(0); }
+
+button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.btn--go, .btn-secondary {
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    box-shadow: none;
+    padding: var(--space-sm) var(--space-lg);
+    font-size: 20px;
+    animation: none;
+}
+
+.btn-reset {
+    background: var(--primary-color);
+    color: #FFFFFF;
+    min-height: 56px;
+    font-size: 20px;
+    font-weight: 700;
+    padding: var(--space-sm) var(--space-md);
+}
+
+.btn-reset:hover { background: var(--primary-deep); }
+
+/* Secondary actions use the outlined treatment from distraction-drive. */
+.btn-back {
+    background: transparent;
+    color: var(--primary-color);
+    box-shadow: inset 0 0 0 2px var(--primary-color);
+    min-height: 56px;
+    font-size: 20px;
+    font-weight: 700;
+    padding: var(--space-sm) var(--space-md);
+}
+
+@media (hover: hover) {
+    .btn-back:hover {
+        background-color: var(--primary-color);
+        color: #fff;
+        box-shadow: inset 0 0 0 2px var(--primary-color);
+        transform: none;
+    }
+}
+
+/* The handle carries its own round layout — the shared button rule above
+   would otherwise force a 56px pill on it. */
+.compare__handle:active { transform: translate(-50%, -50%) scale(0.97); }
+
+/* ===== COMPLETION OVERLAY ===== */
+.completion-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: var(--space-xl);
+    background: var(--overlay-bg);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--duration-slow) var(--ease-out);
+    z-index: 100;
+}
+
+.completion-overlay.active { opacity: 1; pointer-events: auto; }
+
+.completion-overlay h2 {
+    font-size: 42px;
+    color: var(--primary-color);
+    margin-bottom: var(--space-sm);
+    animation: popIn 0.5s var(--ease-spring) both;
+}
+
+.completion-overlay h2::after {
+    content: "";
+    display: block;
+    width: 72px;
+    height: 6px;
+    background: var(--emphasis-color);
+    margin: var(--space-sm) auto 0;
+}
+
+.completion-overlay p {
+    font-size: 24px;
+    max-width: 720px;
+    margin-bottom: var(--space-lg);
+    animation: fadeInUp 0.4s var(--ease-out) 0.2s both;
+}
+
+.overlay-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    animation: fadeInUp 0.4s var(--ease-out) 0.3s both;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes sceneIn {
+    from { opacity: 0; transform: translateX(18px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes popIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pinIn {
+    from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+    to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes pop {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+
+@keyframes nudge {
+    0%, 62%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        box-shadow: 0 0 0 1px rgba(11, 22, 20, 0.28);
+    }
+    16% {
+        transform: translate(-50%, -50%) scale(1.28);
+        box-shadow: 0 0 0 12px var(--emphasis-shadow), 0 8px 26px rgba(11, 22, 20, 0.48);
+    }
+    30% {
+        transform: translate(-50%, -50%) translateX(18px) scale(1.12);
+        box-shadow: 0 0 0 8px var(--emphasis-shadow), 0 8px 26px rgba(11, 22, 20, 0.48);
+    }
+    46% {
+        transform: translate(-50%, -50%) translateX(-5px) scale(1.14);
+        box-shadow: 0 0 0 8px var(--emphasis-shadow), 0 8px 26px rgba(11, 22, 20, 0.48);
+    }
+}
+
+.stagger-in { animation: fadeInUp 0.4s var(--ease-out) both; }
+
+/* no entrance animation on a revisit */
+.no-anim *, .no-anim *::before, .no-anim *::after {
+    animation: none !important;
+}
+
+/* ===== REDUCED MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ===== FOCUS STATES ===== */
+:focus-visible {
+    outline: 3px solid var(--primary-color);
+    outline-offset: 3px;
+}
+
+/* the handle sits on a photo — it needs the lighter ring to stay visible */
+.compare__handle:focus-visible {
+    outline: 3px solid #FFFFFF;
+    outline-offset: 3px;
+    box-shadow: 0 0 0 6px var(--primary-shadow), 0 4px 16px rgba(11, 22, 20, 0.35);
+}
+
+/* ===== TABLET RESPONSIVE ===== */
+@media (max-width: 1300px) {
+    .check-body { grid-template-columns: 1fr 420px; }
+}
+
+@media (max-width: 1024px) {
+    #app { padding: 0 40px; }
+
+    h1 { font-size: 28px; }
+    .check-head__instruction { font-size: 21px; white-space: normal; }
+    .count__num { font-size: 30px; }
+    .check-head__meter { width: 200px; }
+
+    /* still side by side — the sizer shrinks the frame to fit */
+    .check-body {
+        grid-template-columns: 1fr 360px;
+        gap: var(--space-md);
+    }
+
+    .panel { padding: var(--space-sm); }
+    .panel__lead { font-size: 20px; margin-bottom: var(--space-sm); }
+
+    .type-card { padding: var(--space-sm); gap: 6px; }
+    .type-card__icon { width: 34px; height: 34px; }
+    .type-card__line { font-size: 18px; }
+
+    .change-item { font-size: 17px; grid-template-columns: 30px 1fr 22px; }
+    .change-item__num { width: 30px; height: 30px; font-size: 15px; }
+
+    .photo-slot__desc { font-size: 19px; }
+    .compare__label { font-size: 15px; padding: 5px 12px; }
+    .change-pin { width: 38px; height: 38px; font-size: 18px; }
+
+    .completion-overlay h2 { font-size: 34px; }
+    .completion-overlay p { font-size: 21px; }
+}
+
+@media (max-width: 768px) {
+    /* The 720px cap keeps desktop proportions tight. Stacked on a portrait
+       tablet it wastes the screen and squeezes the change list, so the app
+       takes the full height here instead. */
+    #app { padding: 0 24px; max-height: none; }
+
+    h1 { font-size: 23px; }
+    .check-head__instruction { font-size: 19px; margin-top: 8px; white-space: normal; }
+    .check-head { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .check-head__meter { width: 100%; text-align: left; }
+    .count { justify-content: flex-start; }
+
+    /* stage above panel, split so neither can push the other off-screen */
+    .check-body {
+        grid-template-columns: 1fr;
+        grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+        gap: var(--space-sm);
+    }
+
+    .panel { align-self: stretch; padding: 12px; }
+
+    .type-grid { gap: 10px; }
+    .type-card { flex-direction: row; align-items: center; gap: 12px; padding: 12px; }
+    .type-card__icon { width: 30px; height: 30px; }
+    .type-card__line { font-size: 16px; }
+
+    .change-list { gap: 8px; }
+    .change-item { padding: 10px; font-size: 16px; }
+
+    /* still a comfortable touch target, with less of the photo covered */
+    .compare__handle { width: 56px; height: 56px; left: clamp(32px, var(--pos), calc(100% - 32px)); }
+    .change-pin { width: 34px; height: 34px; font-size: 16px; }
+
+    .completion-overlay h2 { font-size: 28px; }
+    .completion-overlay p { font-size: 19px; }
+    .overlay-actions { flex-direction: column; width: 100%; }
+    .overlay-actions button { width: 100%; }
+}
+
+/* ===== HIDE SCROLLBARS (scrolling still works) ===== */
+.change-list,
+.panel,
+body {
+    scrollbar-width: none;          /* Firefox */
+    -ms-overflow-style: none;       /* legacy Edge/IE */
+}
+
+.change-list::-webkit-scrollbar,
+.panel::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;                  /* WebKit/Blink */
+}
+*, *::before, *::after { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+img { -webkit-user-drag: none; user-drag: none; }

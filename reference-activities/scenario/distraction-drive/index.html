@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What is competing for your attention?</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app" data-mode="intro">
+
+        <header class="check-head">
+            <div class="check-head__id">
+                <h1 id="headTitle">Four forms of distraction</h1>
+                <p class="check-head__instruction" id="headInstruction">Select each card to explore what pulls your attention away from the road.</p>
+            </div>
+            <div class="check-head__meter">
+                <p class="count">
+                    <span class="count__num" id="countNum">0</span>
+                    <span class="count__of" id="countOf">of 4 opened</span>
+                </p>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="progressBar"></div>
+                </div>
+            </div>
+        </header>
+
+        <div class="check-body">
+
+            <!-- ===== REVIEW NAV — review mode only; sits above the photo, beside the panel ===== -->
+            <nav class="review-nav" id="reviewNav" hidden aria-label="Review moments">
+                <div class="review-nav__topline">
+                    <p class="review-nav__title">Review moments</p>
+                    <button type="button" class="review-nav__done" id="reviewDone">Done</button>
+                </div>
+                <div class="review-nav__timelines" id="reviewTimelines"></div>
+            </nav>
+
+            <!-- ===== STAGE — swaps between the type grid, a scene sequence, and the recap strip ===== -->
+            <div class="photo-stage" id="photoStage">
+
+                <!-- stage: the four distraction cards -->
+                <div class="type-grid" id="typeGrid"></div>
+
+                <!-- stage: auto-playing drive scene -->
+                <div class="scene-player" id="scenePlayer" hidden>
+                    <img class="scene-player__img" id="beatImg" src="" alt="">
+                    <div class="photo-slot" id="photoSlot" hidden>
+                        <p class="photo-slot__name" id="slotName"></p>
+                        <p class="photo-slot__desc" id="slotDesc"></p>
+                        <p class="photo-slot__size">1500 &times; 1000 px</p>
+                    </div>
+                    <div class="beat-tag" id="beatTag" hidden></div>
+                    <div class="scene-dock">
+                        <!-- audio bar: play/pause + progress. The track is locked
+                             until the scene's audio has played through once. -->
+                        <div class="audio-bar is-locked" id="audioBar" hidden>
+                            <button type="button" class="audio-bar__toggle" id="audioToggle" aria-label="Play audio"></button>
+                            <div class="audio-bar__track" id="audioTrack" role="slider" tabindex="-1"
+                                 aria-label="Audio position" aria-valuemin="0" aria-valuemax="100"
+                                 aria-valuenow="0" aria-valuetext="0:00 of 0:00" aria-disabled="true">
+                                <div class="audio-bar__rail">
+                                    <div class="audio-bar__fill" id="audioFill"></div>
+                                </div>
+                                <div class="audio-bar__thumb" id="audioThumb"></div>
+                            </div>
+                        </div>
+                        <div class="beat-caption" id="beatCaption">
+                            <span class="beat-caption__text" id="beatCaptionText"></span>
+                            <span class="beat-caption__sound" id="beatCaptionSound" hidden></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- stage: the five-photo recap strip -->
+                <div class="filmstrip" id="filmstrip" hidden></div>
+                <div class="recap-actions">
+                    <button type="button" class="btn-back" id="recapBack" hidden>Back</button>
+                    <button type="button" class="btn--go recap-action" id="recapContinue" hidden>Continue to next practice</button>
+                    <button type="button" class="btn--go recap-action" id="finalMessageButton" hidden>See final message</button>
+                </div>
+
+            </div>
+
+            <!-- ===== SIDE PANEL — swaps between four states ===== -->
+            <div class="panel" id="panel">
+
+                <!-- state: intro -->
+                <div class="panel__view" id="viewIntro">
+                    <p class="panel__eyebrow" id="introEyebrow">Four forms</p>
+                    <p class="panel__lead" id="introLead">Distraction shows up in four forms. Open each one to see what it takes from the drive.</p>
+                    <ul class="examples" id="introExamples" hidden></ul>
+                    <p class="panel__note" id="introNote">Distractions often overlap. The more forms involved, the greater the risk.</p>
+                    <button type="button" class="btn--go" id="startPractice" hidden>Start practice</button>
+                </div>
+
+                <!-- state: playback between questions -->
+                <div class="panel__view" id="viewSetup" hidden>
+                    <p class="panel__eyebrow" id="setupEyebrow">Now playing</p>
+                    <p class="panel__lead" id="setupLead"></p>
+                    <p class="panel__lead setup-instruction" id="setupInstruction" hidden>As you follow each moment, notice what pulls your attention away from driving. <br>After each scene, choose the form of distraction you notice.</p>
+                    <div class="setup-preview-grid" id="setupPreviewGrid" hidden aria-label="Four forms of distraction"></div>
+                    <div class="panel__actions">
+                        <button type="button" class="btn-back" id="setupBack">Back</button>
+                        <button type="button" class="btn--go" id="setupContinue" hidden disabled>Continue</button>
+                    </div>
+                </div>
+
+                <!-- state: question -->
+                <div class="panel__view" id="viewQuestion" hidden>
+                    <p class="panel__eyebrow" id="questionEyebrow">Practice 1 &middot; Moment 1</p>
+                    <p class="question" id="questionText">What is the type of distraction?</p>
+                    <div class="options" id="options"></div>
+                    <div class="question-feedback" id="questionFeedback" hidden>
+                        <p class="question-feedback__eyebrow" id="feedbackEyebrow"></p>
+                        <p class="feedback__text" id="feedbackText"></p>
+                    </div>
+                    <div class="panel__actions">
+                        <button type="button" class="btn-back" id="questionBack">Back</button>
+                        <button type="button" class="btn--go question-continue" id="questionContinue" hidden disabled>Continue</button>
+                    </div>
+                </div>
+
+                <!-- state: recap -->
+                <div class="panel__view" id="viewRecap" hidden>
+                    <p class="panel__eyebrow" id="recapEyebrow">Practice 1 &middot; Recap</p>
+                    <p class="panel__lead" id="recapLead"></p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ===== COMPLETION OVERLAY ===== -->
+        <div class="completion-overlay" id="completionOverlay">
+            <h2>Drive-along complete</h2>
+            <p>On a field drive, one moment can pull your eyes, your hands, your hearing, and your mind at once. Most field-drive distractions hit more than one of these &mdash; that&rsquo;s when the risk compounds.</p>
+            <div class="overlay-actions">
+                <button type="button" class="btn-reset" id="overlayRetry">Try again</button>
+                <button type="button" class="btn-secondary" id="overlayReview">Review the drives</button>
+            </div>
+        </div>
+
+    </div>
+    <script src="state-store.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

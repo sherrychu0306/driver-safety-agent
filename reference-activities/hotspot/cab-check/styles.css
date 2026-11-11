@@ -1,0 +1,957 @@
+/* ===== FONTS — VIVINT ===== */
+@font-face {
+    font-family: 'VivintCircular';
+    src: url('fonts/vivintCircular-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'VivintCircular';
+    src: url('fonts/vivintCircular-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ===== BRAND VARIABLES — VIVINT ===== */
+:root {
+    --bg-color: #F3EFE8;
+    --primary-color: #00A073;
+    --primary-deep: #007A58;
+    --emphasis-color: #FF8736;
+    --glow-color: #00A073;
+
+    --text-color: #14201F;
+    --text-muted: #566766;
+    --card-bg: #FBF9F5;
+    --stage-bg: #0B1614;
+    --error-color: #C4362F;
+    --correct-color: #00A073;
+    --font-main: 'VivintCircular', sans-serif;
+
+    /* Precomputed tints — emphasis (#FF8736) */
+    --emphasis-tint: rgba(255, 135, 54, 0.14);
+    --emphasis-light: rgba(255, 135, 54, 0.08);
+    --emphasis-shadow: rgba(255, 135, 54, 0.38);
+
+    /* Precomputed tints — primary (#00A073) */
+    --primary-tint: rgba(0, 160, 115, 0.08);
+    --primary-shadow: rgba(0, 160, 115, 0.20);
+    --border-muted: rgba(0, 160, 115, 0.22);
+
+    --overlay-bg: rgba(243, 239, 232, 0.97);
+    --primary-muted: rgba(20, 32, 31, 0.12);
+    --error-tint: rgba(196, 54, 47, 0.08);
+}
+
+/* ===== SHARED DESIGN TOKENS ===== */
+:root {
+    --space-xs: 8px;
+    --space-sm: 16px;
+    --space-md: 24px;
+    --space-lg: 32px;
+    --space-xl: 48px;
+
+    --shadow-rest: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.12);
+    --shadow-active: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-stage: 0 18px 48px rgba(11, 22, 20, 0.28);
+
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-pill: 20px;
+
+    --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --duration-fast: 150ms;
+    --duration-med: 300ms;
+    --duration-slow: 400ms;
+}
+
+/* ===== RESET ===== */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-main);
+    font-size: 24px;
+    line-height: 1.4;
+    -webkit-font-smoothing: antialiased;
+}
+
+#app {
+    width: 100%;
+    max-width: 1560px;
+    /* 720px = header (~100px) + the tallest 3:2 photo the 908px stage column
+       can hold (605px) + a little slack. Anything taller just adds dead space,
+       because sizePhoto() caps the frame on width, not height. */
+    height: 100%;
+    max-height: 720px;
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0 60px;
+}
+
+[hidden] { display: none !important; }
+
+/* ===== TYPOGRAPHY ===== */
+h1, h2, h3 { font-family: var(--font-main); font-weight: 700; }
+
+h1 {
+    font-size: 34px;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    color: var(--text-color);
+}
+
+/* ===== HEAD ===== */
+.check-head {
+    flex: none;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border-muted);
+    margin-bottom: 20px;
+}
+
+/* Grows into the space left of the meter so the instruction line, the widest
+   thing in the header, can sit on a single line. */
+.check-head__id {
+    text-align: left;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.check-head__instruction {
+    font-size: 24px;
+    line-height: 1.3;
+    color: var(--text-muted);
+    margin-top: 10px;
+    white-space: nowrap;
+}
+
+.check-head__meter {
+    flex: none;
+    width: 220px;
+    text-align: right;
+}
+
+.count {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-end;
+    gap: 10px;
+    line-height: 1;
+}
+
+.count__num {
+    font-size: 34px;
+    font-weight: 700;
+    color: var(--primary-color);
+    letter-spacing: -0.02em;
+}
+
+.count__of {
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 8px;
+    background: var(--primary-muted);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 10px 0 0;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--emphasis-color);
+    border-radius: 4px;
+    transition: width var(--duration-med) var(--ease-spring);
+}
+
+/* ===== BODY GRID ===== */
+.check-body {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1fr 500px;
+    gap: var(--space-lg);
+    align-items: stretch;
+}
+
+/* ===== THE VEHICLE PHOTO ===== */
+.photo-stage {
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* The frame's width/height are set in px by sizePhoto() in script.js — the
+   largest 3:2 box that fits .photo-stage. Doing this in JS rather than with
+   aspect-ratio + max-width/max-height guarantees the frame ratio always
+   matches the photo, so the percentage-positioned hotspots can never drift
+   out of alignment with what the learner sees. */
+.photo-frame {
+    position: relative;
+    flex: none;
+    background: var(--stage-bg);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.photo-frame__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* ===== HOTSPOT LAYER ===== */
+.hotspot-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+}
+
+/* The whole photo is live: a click that lands outside every region is a
+   meaningful "nothing wrong there" answer, not a dead click. */
+.hotspot-layer.is-live { cursor: crosshair; }
+
+.hotspot {
+    position: absolute;
+    padding: 0;
+    min-height: 0;
+    background: transparent;
+    border: 2px solid transparent;
+    border-radius: var(--radius-sm);
+    box-shadow: none;
+    cursor: crosshair;
+    transition: background-color var(--duration-med) var(--ease-out),
+                border-color var(--duration-med) var(--ease-out);
+}
+
+.hotspot:hover { transform: none; box-shadow: none; }
+
+/* Resting affordance — a small amber dot marks each area so the activity is
+   about identifying the fault, not hunting pixels. Set SHOW_MARKERS = false
+   in script.js for a harder, unmarked version. */
+.hotspot__marker {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 18px;
+    height: 18px;
+    margin: -9px 0 0 -9px;
+    border-radius: 50%;
+    background: var(--emphasis-color);
+    border: 2px solid rgba(11, 22, 20, 0.55);
+    opacity: 0.85;
+    pointer-events: none;
+    transition: opacity var(--duration-med) var(--ease-out);
+}
+
+.hotspot-layer.no-markers .hotspot__marker { display: none; }
+
+@media (hover: hover) {
+    .hotspot:not(.is-found):hover {
+        border-color: var(--emphasis-color);
+        background: var(--emphasis-tint);
+    }
+}
+
+.hotspot.is-active {
+    border-color: var(--emphasis-color);
+    background: var(--emphasis-tint);
+}
+
+.hotspot.is-found {
+    /* stays amber once found, matching the hover/active border */
+    border-color: var(--emphasis-color);
+    background: var(--primary-tint);
+    cursor: default;
+    pointer-events: none;
+}
+
+/* Review mode: every spot is found, so let them all be re-opened. */
+#app.is-review .hotspot.is-found {
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+@media (hover: hover) {
+    #app.is-review .hotspot.is-found:hover {
+        border-color: var(--emphasis-color);
+        background: var(--emphasis-tint);
+    }
+}
+
+.hotspot.is-found .hotspot__marker {
+    width: 30px;
+    height: 30px;
+    margin: -15px 0 0 -15px;
+    background: var(--correct-color);
+    border-color: #FFFFFF;
+    opacity: 1;
+    animation: pop 320ms var(--ease-spring);
+}
+
+.hotspot.is-found .hotspot__marker::after {
+    content: "\2713";
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    font-weight: 700;
+    color: #FFFFFF;
+    line-height: 1;
+}
+
+/* the "Show me" nudge — only animation on screen when it runs */
+/* ===== SIDE PANEL ===== */
+.panel {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    padding: var(--space-md);
+    background: var(--card-bg);
+    border-radius: var(--radius-md);
+    border-top: 4px solid var(--primary-color);
+    overflow: hidden;
+    box-shadow: var(--primary-shadow) 0px 2px 8px 0px;
+    /* height is set by matchPanelToPhoto() so it matches the photo frame */
+    align-self: center;
+}
+
+.panel__view {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    flex: 1;
+    animation: fadeInUp var(--duration-med) var(--ease-out) both;
+}
+
+.panel__lead {
+    font-size: 22px;
+    line-height: 1.32;
+    margin-bottom: var(--space-md);
+}
+
+/* ===== FINDINGS CHECKLIST (explore state) ===== */
+.findings {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    min-height: 0;
+    /* gutter so the scroll container can't clip borders, rings or shadows */
+    padding: 6px 10px;
+    margin: -6px -10px;
+}
+
+.finding {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    background: #FFFFFF;
+    border: 2px solid var(--border-muted);
+    border-left: 4px solid var(--primary-muted);
+    border-radius: var(--radius-sm);
+    font-size: 19px;
+    line-height: 1.25;
+    color: var(--text-muted);
+}
+
+.finding__mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid var(--border-muted);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.finding.is-found {
+    border-left-color: var(--correct-color);
+    color: var(--text-color);
+    font-weight: 700;
+    animation: pop 320ms var(--ease-spring);
+}
+
+.finding.is-found .finding__mark {
+    background: var(--correct-color);
+    border-color: var(--correct-color);
+    color: #FFFFFF;
+}
+
+/* ===== QUESTION + OPTIONS (question state) ===== */
+.question {
+    font-size: 22px;
+    line-height: 1.28;
+    margin-bottom: var(--space-sm);
+    color: var(--text-color);
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    min-height: 0;
+    /* gutter so the correct-answer ring, hover shadow, shake and pop
+       aren't clipped by the scroll container's edges */
+    padding: 6px 10px;
+    margin: -6px -10px;
+}
+
+.option {
+    position: relative;
+    display: grid;
+    grid-template-columns: 38px 1fr 24px;
+    align-items: center;
+    gap: 12px;
+    flex: none;
+    min-height: 58px;
+    padding: 10px var(--space-sm) 10px 10px;
+    text-align: left;
+    background: #FFFFFF;
+    border: 2px solid var(--border-muted);
+    border-radius: var(--radius-md);
+    color: var(--text-color);
+    font-family: var(--font-main);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.26;
+    cursor: pointer;
+    transition: transform var(--duration-fast) var(--ease-out),
+                box-shadow var(--duration-fast) var(--ease-out),
+                border-color var(--duration-med) var(--ease-out),
+                background-color var(--duration-med) var(--ease-out);
+}
+
+.option__key {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--card-bg);
+    border: 2px solid var(--border-muted);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--primary-color);
+    transition: background-color var(--duration-med) var(--ease-out),
+                color var(--duration-med) var(--ease-out),
+                border-color var(--duration-med) var(--ease-out);
+}
+
+.option__mark { font-size: 22px; font-weight: 700; line-height: 1; text-align: center; }
+
+@media (hover: hover) {
+    .option:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-hover);
+        border-color: var(--primary-color);
+    }
+}
+
+.option:active { transform: translateY(0) scale(0.985); box-shadow: var(--shadow-active); }
+
+.option.correct {
+    border-color: var(--correct-color);
+    background: var(--primary-tint);
+    box-shadow: 0 0 0 3px var(--primary-shadow);
+    animation: pop 320ms var(--ease-spring);
+}
+
+.option.correct .option__key { background: var(--correct-color); border-color: var(--correct-color); color: #FFFFFF; }
+.option.correct .option__mark { color: var(--correct-color); }
+
+.option.incorrect {
+    border-color: var(--error-color);
+    background: var(--error-tint);
+    animation: shake 0.3s ease-out;
+}
+
+.option.incorrect .option__key { border-color: var(--error-color); color: var(--error-color); background: #FFFFFF; }
+.option.incorrect .option__mark { color: var(--error-color); }
+
+.option.is-locked { pointer-events: none; }
+.option.is-dimmed { opacity: 0.5; }
+
+/* ===== STANDARD (reveal state) ===== */
+/* Type matches .panel__lead so the reveal reads as panel body copy; the
+   emphasis rule stays to mark it as the standard. auto keeps #backToVehicle
+   pinned to the bottom of the panel. */
+.standard__text {
+    font-size: 22px;
+    line-height: 1.32;
+    padding-left: var(--space-sm);
+    border-left: 4px solid var(--emphasis-color);
+    margin-bottom: auto;
+}
+
+.panel #backToVehicle { margin-top: var(--space-md); align-self: flex-start; }
+
+/* ===== BUTTONS ===== */
+button, .btn {
+    font-family: var(--font-main);
+    font-size: 20px;
+    font-weight: 700;
+    padding: var(--space-sm) var(--space-lg);
+    min-height: 56px;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    background-color: var(--primary-color);
+    color: #fff;
+    transition: transform var(--duration-fast) var(--ease-out),
+                box-shadow var(--duration-fast) var(--ease-out),
+                background-color var(--duration-fast) var(--ease-out);
+}
+
+@media (hover: hover) {
+    button:hover, .btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+}
+
+button:active, .btn:active { transform: translateY(0); }
+
+button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.btn--go, .btn-secondary {
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    box-shadow: none;
+    padding: var(--space-sm) var(--space-lg);
+    font-size: 20px;
+    animation: none;
+}
+
+/* The back action uses the outlined green treatment from the companion object. */
+.panel #backToVehicle {
+    background: transparent;
+    color: var(--primary-color);
+    box-shadow: inset 0 0 0 2px var(--primary-color);
+    min-height: 56px;
+    font-size: 20px;
+    font-weight: 700;
+    padding: var(--space-sm) var(--space-md);
+}
+
+@media (hover: hover) {
+    .panel #backToVehicle:hover {
+        background-color: var(--primary-tint);
+        color: var(--primary-deep);
+        box-shadow: inset 0 0 0 2px var(--primary-color);
+    }
+}
+
+.btn-reset {
+    background: transparent;
+    color: var(--text-muted);
+    min-height: 44px;
+    font-size: 17px;
+    font-weight: 700;
+    padding: var(--space-xs) var(--space-sm);
+}
+
+.btn-reset:hover { box-shadow: none; transform: none; color: var(--primary-color); }
+
+/* ===== COMPLETION OVERLAY ===== */
+.completion-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: var(--space-xl);
+    background: var(--overlay-bg);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--duration-slow) var(--ease-out);
+    z-index: 100;
+}
+
+.completion-overlay.active { opacity: 1; pointer-events: auto; }
+
+.completion-overlay h2 {
+    font-size: 42px;
+    color: var(--primary-color);
+    margin-bottom: var(--space-sm);
+    animation: popIn 0.5s var(--ease-spring) both;
+}
+
+.completion-overlay h2::after {
+    content: "";
+    display: block;
+    width: 72px;
+    height: 6px;
+    background: var(--emphasis-color);
+    margin: var(--space-sm) auto 0;
+}
+
+.completion-overlay p {
+    font-size: 24px;
+    max-width: 720px;
+    margin-bottom: var(--space-lg);
+    animation: fadeInUp 0.4s var(--ease-out) 0.2s both;
+}
+
+/* ===== AUTHORING TOOL: AREA PICKER ===== */
+.picker-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    cursor: crosshair;
+    background: rgba(11, 22, 20, 0.12);
+}
+
+.picker-marquee {
+    position: absolute;
+    border: 2px dashed var(--emphasis-color);
+    background: var(--emphasis-tint);
+    pointer-events: none;
+}
+
+/* existing regions drawn as reference while picking */
+.picker-ghost {
+    position: absolute;
+    border: 2px solid var(--emphasis-color);
+    background: rgba(255, 135, 54, 0.10);
+    pointer-events: none;
+}
+
+.picker-ghost__tag {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translateY(-100%);
+    padding: 2px 6px;
+    background: var(--emphasis-color);
+    color: #14201F;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+}
+
+.picker {
+    position: absolute;
+    right: 24px;
+    bottom: 24px;
+    z-index: 200;
+    width: 360px;
+    max-height: 620px;
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-sm);
+    background: #FFFFFF;
+    border: 2px solid var(--primary-color);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-stage);
+    text-align: left;
+}
+
+.picker__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-xs);
+}
+
+.picker__title {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: 0.14em;
+    color: var(--primary-color);
+}
+
+.picker__close {
+    width: 36px;
+    height: 36px;
+    min-height: 36px;
+    padding: 0;
+    font-size: 24px;
+    line-height: 1;
+    background: transparent;
+    color: var(--text-muted);
+}
+
+.picker__close:hover { transform: none; box-shadow: none; color: var(--error-color); }
+
+.picker__help, .picker__note {
+    font-size: 14px;
+    line-height: 1.35;
+    color: var(--text-muted);
+}
+
+.picker__help { margin-bottom: var(--space-sm); }
+.picker__note { margin-top: var(--space-xs); }
+.picker__note code { font-size: 13px; background: var(--card-bg); padding: 1px 4px; border-radius: 3px; }
+
+.picker__pending {
+    padding: 10px;
+    background: var(--card-bg);
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--space-xs);
+}
+
+.picker__label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+}
+
+.picker__coords {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 4px 0 8px;
+    font-variant-numeric: tabular-nums;
+}
+
+.picker__assign { display: flex; gap: 8px; }
+
+.picker__assign select {
+    flex: 1;
+    min-width: 0;
+    font-family: var(--font-main);
+    font-size: 14px;
+    padding: 8px;
+    border: 2px solid var(--border-muted);
+    border-radius: var(--radius-sm);
+    background: #FFFFFF;
+    color: var(--text-color);
+}
+
+.picker__assign button {
+    font-size: 14px;
+    min-height: 40px;
+    padding: 8px 14px;
+}
+
+.picker__list {
+    list-style: none;
+    overflow-y: auto;
+    min-height: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.picker__row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    align-items: baseline;
+    padding: 6px 8px;
+    border-left: 3px solid var(--emphasis-color);
+    background: var(--card-bg);
+    font-size: 13px;
+    line-height: 1.3;
+}
+
+.picker__row b { font-size: 14px; color: var(--text-color); }
+.picker__row span { color: var(--text-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.picker__actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: var(--space-xs);
+}
+
+.picker__actions .btn-secondary { font-size: 15px; min-height: 44px; padding: 10px 16px; }
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes popIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pop {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.03); }
+    100% { transform: scale(1); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%      { transform: translateX(-6px); }
+    40%      { transform: translateX(6px); }
+    60%      { transform: translateX(-4px); }
+    80%      { transform: translateX(4px); }
+}
+
+.stagger-in { animation: fadeInUp 0.4s var(--ease-out) both; }
+
+/* no entrance animation on a revisit */
+.no-anim *, .no-anim *::before, .no-anim *::after {
+    animation: none !important;
+}
+
+/* ===== REDUCED MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ===== FOCUS STATES ===== */
+:focus-visible {
+    outline: 3px solid var(--primary-color);
+    outline-offset: 3px;
+}
+
+.hotspot:focus-visible {
+    outline: 3px solid var(--emphasis-color);
+    outline-offset: 0;
+    background: var(--emphasis-tint);
+}
+
+/* ===== TABLET RESPONSIVE ===== */
+@media (max-width: 1300px) {
+    .check-body { grid-template-columns: 1fr 380px; }
+}
+
+@media (max-width: 1024px) {
+    #app { padding: 0 40px; }
+
+    h1 { font-size: 28px; }
+    .check-head__instruction { font-size: 21px; white-space: normal; }
+    .count__num { font-size: 30px; }
+    .check-head__meter { width: 180px; }
+
+    /* still side by side — the sizer shrinks the photo to fit */
+    .check-body {
+        grid-template-columns: 1fr 360px;
+        gap: var(--space-md);
+    }
+
+    .panel { padding: var(--space-sm); }
+    .panel__lead { font-size: 20px; margin-bottom: var(--space-sm); }
+    .question { font-size: 20px; }
+    .option { font-size: 17px; min-height: 54px; grid-template-columns: 34px 1fr 22px; }
+    .option__key { width: 34px; height: 34px; font-size: 16px; }
+    .finding { font-size: 17px; }
+    .standard__text { font-size: 20px; }
+    .completion-overlay h2 { font-size: 34px; }
+    .completion-overlay p { font-size: 21px; }
+
+    .picker { width: 300px; right: 16px; bottom: 16px; max-height: 70vh; }
+}
+
+@media (max-width: 768px) {
+    #app { padding: 0 24px; }
+
+    h1 { font-size: 23px; }
+    .check-head__instruction { font-size: 19px; margin-top: 8px; white-space: normal; }
+    .check-head { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .check-head__meter { width: 100%; text-align: left; }
+    .count { justify-content: flex-start; }
+
+    /* photo above panel, split evenly so neither can push the other off-stage */
+    .check-body {
+        grid-template-columns: 1fr;
+        grid-template-rows: minmax(0, 1.5fr) minmax(0, 1fr);
+        gap: var(--space-sm);
+    }
+
+    .panel { align-self: stretch; }
+
+    .findings { gap: 8px; }
+    .finding { font-size: 16px; grid-template-columns: 24px 1fr; gap: 10px; }
+    .finding__mark { width: 24px; height: 24px; font-size: 13px; }
+
+    .option { min-height: 56px; font-size: 17px; padding: 10px; }
+    .question { font-size: 19px; }
+
+    button, .btn { font-size: 16px; padding: 12px 24px; min-height: 48px; }
+
+    .completion-overlay h2 { font-size: 28px; }
+    .completion-overlay p { font-size: 19px; }
+}
+
+/* ===== HIDE SCROLLBARS (scrolling still works) ===== */
+.findings,
+.options,
+.picker__list,
+.panel,
+body {
+    scrollbar-width: none;          /* Firefox */
+    -ms-overflow-style: none;       /* legacy Edge/IE */
+}
+
+.findings::-webkit-scrollbar,
+.options::-webkit-scrollbar,
+.picker__list::-webkit-scrollbar,
+.panel::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;                  /* WebKit/Blink */
+}
+*, *::before, *::after { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+img { -webkit-user-drag: none; user-drag: none; }

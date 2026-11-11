@@ -1,0 +1,1737 @@
+/* ===== FONTS — VIVINT ===== */
+@font-face {
+    font-family: 'VivintCircular';
+    src: url('fonts/vivintCircular-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'VivintCircular';
+    src: url('fonts/vivintCircular-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ===== BRAND VARIABLES — VIVINT ===== */
+:root {
+    --bg-color: #F3EFE8;
+    --primary-color: #00A073;
+    --primary-deep: #007A58;
+    --emphasis-color: #FF8736;
+    --glow-color: #00A073;
+
+    --text-color: #14201F;
+    --text-muted: #566766;
+    --card-bg: #FBF9F5;
+    --stage-bg: #0B1614;
+    --error-color: #C4362F;
+    --correct-color: #00A073;
+    --font-main: 'VivintCircular', sans-serif;
+
+    /* Precomputed tints — emphasis (#FF8736) */
+    --emphasis-tint: rgba(255, 135, 54, 0.14);
+    --emphasis-light: rgba(255, 135, 54, 0.08);
+    --emphasis-shadow: rgba(255, 135, 54, 0.38);
+
+    /* Precomputed tints — primary (#00A073) */
+    --primary-tint: rgba(0, 160, 115, 0.08);
+    --primary-shadow: rgba(0, 160, 115, 0.20);
+    --border-muted: rgba(0, 160, 115, 0.22);
+
+    --overlay-bg: rgba(243, 239, 232, 0.97);
+    --primary-muted: rgba(20, 32, 31, 0.12);
+    --error-tint: rgba(196, 54, 47, 0.08);
+}
+
+/* ===== SHARED DESIGN TOKENS ===== */
+:root {
+    --space-xs: 8px;
+    --space-sm: 16px;
+    --space-md: 24px;
+    --space-lg: 32px;
+    --space-xl: 48px;
+
+    --shadow-rest: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.12);
+    --shadow-active: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-stage: 0 18px 48px rgba(11, 22, 20, 0.28);
+
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-pill: 20px;
+
+    --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --duration-fast: 150ms;
+    --duration-med: 300ms;
+    --duration-slow: 400ms;
+}
+
+/* ===== RESET ===== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-main);
+    font-size: 24px;
+    line-height: 1.4;
+    -webkit-font-smoothing: antialiased;
+}
+
+#app {
+    width: 100%;
+    max-width: 1560px;
+    /* 720px = header (~100px) + the tallest 3:2 scene the stage column can
+       hold + a little slack. Anything taller just adds dead space, because
+       sizeScene() caps the player on width, not height. */
+    height: 100%;
+    max-height: 720px;
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0 60px;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+/* ===== TYPOGRAPHY ===== */
+h1,
+h2,
+h3 {
+    font-family: var(--font-main);
+    font-weight: 700;
+}
+
+h1 {
+    font-size: 34px;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    color: var(--text-color);
+}
+
+.eyebrow {
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--primary-color);
+    margin-bottom: var(--space-xs);
+}
+
+.eyebrow--amber {
+    color: var(--primary-deep);
+}
+
+.eyebrow--amber::before {
+    content: "";
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--emphasis-color);
+    margin-right: 10px;
+    vertical-align: 1px;
+}
+
+/* ===== HEAD ===== */
+.check-head {
+    flex: none;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border-muted);
+    margin-bottom: 20px;
+}
+
+/* Grows into the space left of the meter so the instruction line, the widest
+   thing in the header, can sit on a single line. */
+.check-head__id {
+    text-align: left;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.check-head__instruction {
+    font-size: 24px;
+    line-height: 1.3;
+    color: var(--text-muted);
+    margin-top: 10px;
+    white-space: nowrap;
+}
+
+.check-head__meter {
+    flex: none;
+    width: 240px;
+    text-align: right;
+}
+
+.count {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-end;
+    gap: 10px;
+    line-height: 1;
+}
+
+.count__num {
+    font-size: 34px;
+    font-weight: 700;
+    color: var(--primary-color);
+    letter-spacing: -0.02em;
+}
+
+.count__of {
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 8px;
+    background: var(--primary-muted);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 10px 0 0;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--emphasis-color);
+    border-radius: 4px;
+    transition: width var(--duration-med) var(--ease-spring);
+}
+
+/* ===== REVIEW NAVIGATION ===== */
+.review-nav {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+    padding: 14px var(--space-md);
+    border: 2px solid var(--border-muted);
+    border-top: 4px solid var(--primary-color);
+    border-radius: var(--radius-md);
+    background: var(--card-bg);
+}
+
+.review-nav__topline,
+.review-nav__row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.review-nav__topline {
+    justify-content: space-between;
+}
+
+.review-nav__title,
+.review-nav__label {
+    color: var(--primary-color);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: none;
+    white-space: nowrap;
+}
+
+.review-nav__label {
+    width: 110px;
+    flex: none;
+    color: var(--text-color);
+    letter-spacing: 0.08em;
+}
+
+.review-nav__timelines {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.review-nav__moments {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+    flex: 1;
+}
+
+.review-nav__moment {
+    min-height: 44px;
+    padding: 8px 12px;
+    border: 2px solid var(--border-muted);
+    border-radius: var(--radius-sm);
+    background: #FFFFFF;
+    color: var(--text-color);
+    font-family: var(--font-main);
+    font-size: 16px;
+    font-weight: 700;
+    text-align: left;
+    cursor: pointer;
+}
+
+.review-nav__moment[aria-current="step"] {
+    border-color: var(--primary-color);
+    background: var(--primary-tint);
+    color: var(--primary-color);
+}
+
+.review-nav__done {
+    min-height: 40px;
+    padding: 6px 14px;
+    border: 2px solid var(--border-muted);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--primary-color);
+    font-family: var(--font-main);
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+@media (hover: hover) {
+
+    .review-nav__moment:hover,
+    .review-nav__done:hover {
+        border-color: var(--primary-color);
+    }
+}
+
+/* ===== BODY GRID ===== */
+.check-body {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1fr 500px;
+    grid-template-rows: minmax(0, 1fr);
+    grid-template-areas: "stage panel";
+    gap: var(--space-lg);
+    align-items: stretch;
+}
+
+.photo-stage { grid-area: stage; }
+.panel { grid-area: panel; }
+.review-nav { grid-area: nav; }
+
+/* Review mode: the review nav sits above the photo, and the question panel
+   runs the full height beside both so all four options fit without scrolling. */
+#app.is-reviewing .check-body {
+    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-areas:
+        "nav panel"
+        "stage panel";
+    row-gap: var(--space-md);
+}
+
+/* ===== STAGE ===== */
+.photo-stage {
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ===== STAGE: THE FOUR DISTRACTION CARDS ===== */
+.type-grid {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: var(--space-sm);
+    align-content: center;
+}
+
+.type-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 10px;
+    min-height: 0;
+    padding: var(--space-md);
+    text-align: left;
+    background: #FFFFFF;
+    border: 2px solid var(--border-muted);
+    border-left: 4px solid var(--primary-muted);
+    border-radius: var(--radius-md);
+    color: var(--text-color);
+    font-family: var(--font-main);
+    cursor: pointer;
+    transition: transform var(--duration-fast) var(--ease-out),
+        box-shadow var(--duration-fast) var(--ease-out),
+        border-color var(--duration-med) var(--ease-out),
+        background-color var(--duration-med) var(--ease-out);
+}
+
+@media (hover: hover) {
+    .type-card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-hover);
+        border-color: var(--primary-color);
+    }
+}
+
+.type-card:active {
+    transform: translateY(0) scale(0.99);
+    box-shadow: var(--shadow-active);
+}
+
+.type-card__icon {
+    width: 44px;
+    height: 44px;
+    flex: none;
+    color: var(--primary-color);
+    transition: color var(--duration-med) var(--ease-out);
+}
+
+.type-card__name {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.type-card__line {
+    font-size: 20px;
+    line-height: 1.25;
+    color: var(--text-muted);
+}
+
+.type-card.is-active {
+    border-color: var(--correct-color);
+    background: var(--emphasis-tint);
+}
+
+.type-card.is-opened {
+    border-left-color: var(--correct-color);
+    background: var(--primary-tint);
+    animation: pop 320ms var(--ease-spring);
+}
+
+.type-card.is-opened .type-card__name::after {
+    content: "\2713";
+    margin-left: 10px;
+    font-size: 20px;
+    color: var(--correct-color);
+}
+
+/* ===== STAGE: THE AUTO-PLAYING SCENE ===== */
+/* The player's width/height are set in px by sizeScene() in script.js — the
+   largest 3:2 box that fits .photo-stage. */
+.scene-player {
+    position: relative;
+    flex: none;
+    background: var(--stage-bg);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.scene-player.scene-enter {
+    animation: sceneIn 420ms var(--ease-out) both;
+}
+
+.scene-player__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.scene-player__img.scene-enter {
+    animation: sceneImageIn 420ms var(--ease-out) both;
+}
+
+/* Shown in place of the photo until a real file lands in img/. Names the file
+   the author needs to supply, what it should show, and the target size. */
+.photo-slot {
+    position: absolute;
+    inset: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: var(--space-md);
+    text-align: center;
+    border: 2px dashed var(--emphasis-color);
+    border-radius: var(--radius-sm);
+    color: #FFFFFF;
+}
+
+.photo-slot__name {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--emphasis-color);
+    letter-spacing: 0.04em;
+}
+
+.photo-slot__desc {
+    font-size: 21px;
+    line-height: 1.3;
+    max-width: 30ch;
+}
+
+.photo-slot__size {
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: 0.14em;
+    color: rgba(255, 255, 255, 0.62);
+}
+
+/* Bottom band of the photo: audio bar stacked on the caption, one dark strip. */
+.scene-dock {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    background: rgba(11, 22, 20, 0.88);
+}
+
+/* ===== AUDIO BAR ===== */
+.audio-bar {
+    --audio-progress: 0%;
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: 10px var(--space-md) 0;
+}
+
+.audio-bar__toggle {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--emphasis-color);
+    color: #14201F;
+    cursor: pointer;
+    transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.audio-bar__toggle svg {
+    width: 22px;
+    height: 22px;
+}
+
+/* Laptop/desktop: compact 32px button. Tablet and mobile keep the 48px
+   touch target above. */
+@media (min-width: 1025px) {
+    .audio-bar__toggle {
+        width: 32px;
+        height: 32px;
+    }
+
+    .audio-bar__toggle svg {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+.audio-bar__toggle:active {
+    transform: scale(0.94);
+}
+
+.audio-bar__toggle:focus-visible,
+.audio-bar__track:focus-visible {
+    outline: 3px solid #FFFFFF;
+    outline-offset: 3px;
+}
+
+/* 48px-tall hit area around a 6px rail. */
+.audio-bar__track {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    touch-action: none;
+    border-radius: var(--radius-sm);
+}
+
+.audio-bar__rail {
+    position: relative;
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.22);
+    overflow: hidden;
+}
+
+.audio-bar__fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: var(--audio-progress);
+    background: var(--emphasis-color);
+}
+
+.audio-bar__thumb {
+    position: absolute;
+    top: 50%;
+    left: var(--audio-progress);
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    border: 3px solid var(--emphasis-color);
+    transform: scale(1);
+    transition: transform var(--duration-med) var(--ease-spring);
+    pointer-events: none;
+}
+
+/* Locked: the bar only reports progress. No thumb, no grab cursor. */
+.audio-bar.is-locked .audio-bar__track {
+    cursor: default;
+}
+
+.audio-bar.is-locked .audio-bar__thumb {
+    transform: scale(0);
+}
+
+.audio-bar:not(.is-locked) .audio-bar__track {
+    cursor: grab;
+}
+
+.audio-bar.is-dragging .audio-bar__track {
+    cursor: grabbing;
+}
+
+.audio-bar.is-dragging .audio-bar__thumb {
+    transform: scale(1.2);
+}
+
+.beat-caption {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: var(--space-sm) var(--space-md);
+    color: #FFFFFF;
+    font-size: 22px;
+    line-height: 1.3;
+}
+
+.beat-caption__sound {
+    flex: none;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    background: var(--emphasis-color);
+    color: #14201F;
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+}
+
+/* The answer stamped onto the photo once the moment is tagged. */
+.beat-tag {
+    position: absolute;
+    top: var(--space-sm);
+    left: var(--space-sm);
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    background: var(--emphasis-color);
+    color: #14201F;
+    font-size: 17px;
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: 0.1em;
+    animation: popIn 0.35s var(--ease-spring) both;
+}
+
+/* ===== STAGE: THE RECAP FILMSTRIP ===== */
+.filmstrip {
+    width: 100%;
+    max-width: 1440px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    align-items: stretch;
+}
+
+.film {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.film__shot {
+    position: relative;
+    aspect-ratio: 3 / 2;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: var(--stage-bg);
+    box-shadow: var(--shadow-rest);
+}
+
+.film__shot img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.film__num {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(11, 22, 20, 0.78);
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.film__tag {
+    padding: 5px 8px;
+    border-radius: var(--radius-sm);
+    background: var(--emphasis-color);
+    color: #14201F;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: 0.08em;
+    text-align: center;
+}
+
+.film__tag.is-none {
+    background: transparent;
+    border: 2px solid var(--border-muted);
+    color: var(--text-muted);
+}
+
+.film__caption {
+    font-size: 20px;
+    line-height: 1.28;
+    color: var(--text-muted);
+}
+
+/* ===== RECAP FULL-WIDTH LAYOUT ===== */
+#app[data-mode="recap"] .check-body {
+    grid-template-columns: 1fr;
+    grid-template-areas: "stage";
+}
+
+#app[data-mode="recap"] .panel {
+    display: none;
+}
+
+#app[data-mode="recap"] .photo-stage {
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+#app[data-mode="recap"] .recap-action {
+    flex: none;
+    margin-top: 0;
+}
+
+/* ===== SIDE PANEL ===== */
+.panel {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    padding: var(--space-md);
+    background: var(--card-bg);
+    border-radius: var(--radius-md);
+    border-top: 4px solid var(--primary-color);
+    overflow: hidden;
+    box-shadow: var(--primary-shadow) 0px 2px 8px 0px;
+    /* Fills its grid row rather than being pinned to the photo's height: at
+       1024px the frame is short enough that a pinned panel clipped the fourth
+       option. The photo stays centred beside it. */
+    align-self: stretch;
+}
+
+.panel__view {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    flex: 1;
+    animation: fadeInUp var(--duration-med) var(--ease-out) both;
+}
+
+.panel.is-question .panel__view {
+    animation: drawerIn var(--duration-med) var(--ease-out) both;
+}
+
+.panel__eyebrow {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--primary-color);
+    margin-bottom: var(--space-sm);
+}
+
+.panel__lead {
+    font-size: 22px;
+    line-height: 1.32;
+    margin-bottom: var(--space-md);
+}
+
+/* The standing line under the panel body — pushed to the bottom so the
+   action button sits beneath it. */
+.panel__note {
+    font-size: 20px;
+    line-height: 1.3;
+    color: var(--text-muted);
+    margin-top: auto;
+    padding-top: var(--space-sm);
+}
+
+.panel .btn--go {
+    margin-top: var(--space-md);
+    align-self: flex-start;
+}
+
+/* ===== BEAT 1 SETUP PREVIEW ===== */
+/* Informational only: the four tiles preview the answer vocabulary while the
+   audio plays; Continue is the sole action in this setup state. */
+.panel.is-beat1 .panel__view {
+    align-items: stretch;
+}
+
+.panel.is-beat1 .setup-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.setup-preview-tile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 72px;
+    padding: 12px;
+    background: #FFFFFF;
+    border: 2px dashed rgba(0, 160, 115, 0.28);
+    border-radius: var(--radius-sm);
+    color: var(--primary-color);
+}
+
+.setup-preview-tile__icon {
+    width: 30px;
+    height: 30px;
+    flex: none;
+}
+
+.setup-preview-tile__icon svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.setup-preview-tile__name {
+    color: var(--text-color);
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.panel.is-beat1 .btn--go {
+    margin-top: var(--space-md);
+}
+
+/* ===== BACK / CONTINUE ROW ===== */
+/* Back sits left and stays put; Continue takes the right edge once it
+   appears, so the forward action never jumps under the learner's finger. */
+.panel__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-top: var(--space-md);
+}
+
+.panel .panel__actions .btn--go {
+    margin-top: 0;
+    margin-left: auto;
+    align-self: auto;
+}
+
+/* Review mode moves by the moment timeline instead. */
+#app.is-reviewing .btn-back {
+    display: none;
+}
+
+.recap-actions {
+    display: none;
+}
+
+#app[data-mode="recap"] .recap-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+/* ===== EXAMPLES LIST (intro state) ===== */
+.examples {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow-y: auto;
+    min-height: 0;
+    /* gutter so the scroll container can't clip borders or shadows */
+    padding: 6px 10px;
+    margin: -6px -10px;
+}
+
+.example {
+    padding: 8px 12px;
+    background: #FFFFFF;
+    border: 2px solid var(--border-muted);
+    border-left: 4px solid var(--emphasis-color);
+    border-radius: var(--radius-sm);
+    font-size: 20px;
+    line-height: 1.25;
+    color: var(--text-color);
+}
+
+/* ===== QUESTION + OPTIONS (question state) ===== */
+.question {
+    font-size: 22px;
+    line-height: 1.28;
+    margin-bottom: var(--space-sm);
+    color: var(--text-color);
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    min-height: 0;
+    /* gutter so the correct-answer ring, hover shadow, shake and pop
+       aren't clipped by the scroll container's edges */
+    padding: 6px 10px;
+    margin: -6px -10px;
+}
+
+.option {
+    position: relative;
+    display: grid;
+    grid-template-columns: 38px 1fr 24px;
+    align-items: center;
+    gap: 12px;
+    flex: none;
+    min-height: 58px;
+    padding: 10px var(--space-sm) 10px 10px;
+    text-align: left;
+    background: #FFFFFF;
+    border: 2px solid var(--border-muted);
+    border-radius: var(--radius-md);
+    color: var(--text-color);
+    font-family: var(--font-main);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.26;
+    cursor: pointer;
+    transition: transform var(--duration-fast) var(--ease-out),
+        box-shadow var(--duration-fast) var(--ease-out),
+        border-color var(--duration-med) var(--ease-out),
+        background-color var(--duration-med) var(--ease-out);
+}
+
+.option__key {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--card-bg);
+    border: 2px solid var(--border-muted);
+    color: var(--primary-color);
+    transition: background-color var(--duration-med) var(--ease-out),
+        color var(--duration-med) var(--ease-out),
+        border-color var(--duration-med) var(--ease-out);
+}
+
+.option__key svg {
+    width: 22px;
+    height: 22px;
+    display: block;
+}
+
+.option__text {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.option__mark {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+}
+
+@media (hover: hover) {
+    .option:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-hover);
+        border-color: var(--primary-color);
+    }
+}
+
+.option:active {
+    transform: translateY(0) scale(0.985);
+    box-shadow: var(--shadow-active);
+}
+
+.option.correct {
+    border-color: var(--correct-color);
+    background: var(--primary-tint);
+    box-shadow: 0 0 0 3px var(--primary-shadow);
+    animation: pop 320ms var(--ease-spring);
+}
+
+.option.correct .option__key {
+    background: var(--correct-color);
+    border-color: var(--correct-color);
+    color: #FFFFFF;
+}
+
+.option.correct .option__mark {
+    color: var(--correct-color);
+}
+
+.option.incorrect {
+    border-color: var(--error-color);
+    background: var(--error-tint);
+    animation: shake 0.3s ease-out;
+}
+
+.option.incorrect .option__key {
+    border-color: var(--error-color);
+    color: var(--error-color);
+    background: #FFFFFF;
+}
+
+.option.incorrect .option__mark {
+    color: var(--error-color);
+}
+
+.option.is-locked {
+    pointer-events: none;
+}
+
+/* ===== INLINE FEEDBACK (reveal state) ===== */
+.question-feedback {
+    flex: none;
+    margin-top: var(--space-sm);
+    padding-top: var(--space-sm);
+    border-top: 2px solid var(--border-muted);
+    animation: fadeInUp var(--duration-med) var(--ease-out) both;
+}
+
+.question-feedback__eyebrow {
+    margin-bottom: 8px;
+    color: var(--correct-color);
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+}
+
+.question-feedback.is-wrong .question-feedback__eyebrow {
+    color: var(--error-color);
+}
+
+/* Type matches .panel__lead so the reveal reads as panel body copy; the
+   emphasis rule marks it as the answer. */
+.feedback__text {
+    font-size: 22px;
+    line-height: 1.32;
+    padding-left: var(--space-sm);
+    border-left: 4px solid var(--emphasis-color);
+    margin-bottom: 0;
+}
+
+/* ===== BUTTONS ===== */
+button,
+.btn {
+    font-family: var(--font-main);
+    font-size: 20px;
+    font-weight: 700;
+    padding: var(--space-sm) var(--space-lg);
+    min-height: 32px;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    background-color: var(--primary-color);
+    color: #fff;
+    transition: transform var(--duration-fast) var(--ease-out),
+        box-shadow var(--duration-fast) var(--ease-out),
+        background-color var(--duration-fast) var(--ease-out);
+}
+
+@media (hover: hover) {
+
+    button:hover,
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-hover);
+    }
+}
+
+button:active,
+.btn:active {
+    transform: translateY(0);
+}
+
+button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.btn--go,
+.btn-secondary {
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    box-shadow: none;
+    padding: var(--space-sm) var(--space-lg);
+    font-size: 20px;
+    animation: none;
+}
+
+/* Secondary actions: Back and Try Again share one outlined style. */
+.btn-reset,
+.btn-back {
+    background: transparent;
+    color: var(--primary-color);
+    box-shadow: inset 0 0 0 2px var(--primary-color);
+    min-height: 56px;
+    font-size: 20px;
+    font-weight: 700;
+    padding: var(--space-sm) var(--space-md);
+}
+
+@media (hover: hover) {
+    .btn-reset:hover,
+    .btn-back:hover {
+        background-color: var(--primary-color);
+        color: #fff;
+        box-shadow: inset 0 0 0 2px var(--primary-color);
+        transform: none;
+    }
+}
+
+/* The cards and the type buttons carry their own layout — the shared button
+   rule above would otherwise force a 56px pill on them. */
+.type-card,
+.option {
+    min-height: 0;
+    background-color: #FFFFFF;
+    color: var(--text-color);
+    font-weight: 400;
+}
+
+.type-card {
+    min-height: 0;
+    padding: var(--space-md);
+}
+
+.option {
+    min-height: 58px;
+}
+
+/* ===== COMPLETION OVERLAY ===== */
+.completion-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: var(--space-xl);
+    background: var(--overlay-bg);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--duration-slow) var(--ease-out);
+    z-index: 100;
+}
+
+.completion-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.completion-overlay h2 {
+    font-size: 42px;
+    color: var(--primary-color);
+    margin-bottom: var(--space-sm);
+    animation: popIn 0.5s var(--ease-spring) both;
+}
+
+.completion-overlay h2::after {
+    content: "";
+    display: block;
+    width: 72px;
+    height: 6px;
+    background: var(--emphasis-color);
+    margin: var(--space-sm) auto 0;
+}
+
+.completion-overlay p {
+    font-size: 24px;
+    max-width: 720px;
+    margin-bottom: var(--space-lg);
+    animation: fadeInUp 0.4s var(--ease-out) 0.2s both;
+}
+
+.overlay-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    animation: fadeInUp 0.4s var(--ease-out) 0.3s both;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes sceneIn {
+    from {
+        opacity: 0;
+        transform: translateX(18px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes sceneImageIn {
+    from {
+        opacity: 0;
+        transform: scale(1.02);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes drawerIn {
+    from {
+        opacity: 0;
+        transform: translateX(28px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes popIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes pop {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.03);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    20% {
+        transform: translateX(-6px);
+    }
+
+    40% {
+        transform: translateX(6px);
+    }
+
+    60% {
+        transform: translateX(-4px);
+    }
+
+    80% {
+        transform: translateX(4px);
+    }
+}
+
+.stagger-in {
+    animation: fadeInUp 0.4s var(--ease-out) both;
+}
+
+/* no entrance animation on a revisit */
+.no-anim *,
+.no-anim *::before,
+.no-anim *::after {
+    animation: none !important;
+}
+
+/* ===== REDUCED MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ===== FOCUS STATES ===== */
+:focus-visible {
+    outline: 3px solid var(--primary-color);
+    outline-offset: 3px;
+}
+
+/* ===== TABLET RESPONSIVE ===== */
+@media (max-width: 1300px) {
+    .check-body {
+        grid-template-columns: 1fr 420px;
+    }
+}
+
+@media (max-width: 1024px) {
+    #app {
+        padding: 0 40px;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    .check-head__instruction {
+        font-size: 21px;
+        white-space: normal;
+    }
+
+    .count__num {
+        font-size: 30px;
+    }
+
+    .check-head__meter {
+        width: 200px;
+    }
+
+    /* still side by side — the sizer shrinks the photo to fit */
+    .check-body {
+        grid-template-columns: 1fr 360px;
+        gap: var(--space-md);
+    }
+
+    .panel {
+        padding: var(--space-sm);
+    }
+
+    .panel__lead {
+        font-size: 20px;
+        margin-bottom: var(--space-sm);
+    }
+
+    .panel__note {
+        font-size: 17px;
+    }
+
+    .question {
+        font-size: 20px;
+    }
+
+    .option {
+        min-height: 54px;
+        grid-template-columns: 34px 1fr 22px;
+    }
+
+    .option__key {
+        width: 34px;
+        height: 34px;
+    }
+
+    .option__text {
+        font-size: 18px;
+    }
+
+    .example {
+        font-size: 17px;
+    }
+
+    .feedback__text {
+        font-size: 20px;
+    }
+
+    .setup-preview-tile {
+        min-height: 64px;
+        padding: 10px;
+    }
+
+    .setup-preview-tile__name {
+        font-size: 17px;
+    }
+
+    .type-card {
+        padding: var(--space-sm);
+        gap: 6px;
+    }
+
+    .type-card__icon {
+        width: 34px;
+        height: 34px;
+    }
+
+    .type-card__name {
+        font-size: 22px;
+    }
+
+    .type-card__line {
+        font-size: 17px;
+    }
+
+    .beat-caption {
+        font-size: 21px;
+        padding: 12px var(--space-sm);
+    }
+
+    .photo-slot__desc {
+        font-size: 20px;
+    }
+
+    .film__caption {
+        font-size: 13px;
+    }
+
+    .completion-overlay h2 {
+        font-size: 34px;
+    }
+
+    .completion-overlay p {
+        font-size: 21px;
+    }
+}
+
+@media (max-width: 768px) {
+    .audio-bar {
+        gap: 12px;
+        padding: 6px var(--space-sm) 0;
+    }
+
+    /* The photo is small here; keep the band thin. */
+    .scene-dock .beat-caption {
+        padding-top: 4px;
+        padding-bottom: 10px;
+    }
+
+
+    /* The 720px cap keeps desktop proportions tight. Stacked on a portrait
+       tablet it wastes the screen and squeezes the options list, so the app
+       takes the full height here instead. */
+    #app {
+        padding: 0 24px;
+        max-height: none;
+    }
+
+    h1 {
+        font-size: 23px;
+    }
+
+    .check-head__instruction {
+        font-size: 20px;
+        margin-top: 8px;
+        white-space: normal;
+    }
+
+    .check-head {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .check-head__meter {
+        width: 100%;
+        text-align: left;
+    }
+
+    .count {
+        justify-content: flex-start;
+    }
+
+    .review-nav {
+        padding: 12px;
+    }
+
+    .review-nav__row {
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .review-nav__label {
+        width: 84px;
+        font-size: 13px;
+    }
+
+    .review-nav__moments {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .review-nav__moment {
+        font-size: 14px;
+    }
+
+    /* stage above panel, split so neither can push the other off-screen */
+    .check-body {
+        grid-template-columns: 1fr;
+        grid-template-areas: "stage" "panel";
+        /* even split: the panel needs room for all four options without
+           scrolling, and the photo is width-capped here anyway */
+        grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+        gap: var(--space-sm);
+    }
+
+    #app.is-reviewing .check-body {
+        grid-template-rows: auto minmax(0, 1fr) minmax(0, 1fr);
+        grid-template-areas: "nav" "stage" "panel";
+    }
+
+    .panel {
+        align-self: stretch;
+    }
+
+    .type-grid {
+        gap: 10px;
+    }
+
+    .type-card {
+        flex-direction: row;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+    }
+
+    .type-card__icon {
+        width: 30px;
+        height: 30px;
+    }
+
+    .type-card__name {
+        font-size: 20px;
+    }
+
+    .type-card__line {
+        display: none;
+    }
+
+    .filmstrip {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .film__caption {
+        display: none;
+    }
+
+    .film__tag {
+        font-size: 12px;
+        padding: 4px 4px;
+        letter-spacing: 0.04em;
+    }
+
+    .beat-caption {
+        font-size: 20px;
+    }
+
+    .panel {
+        padding: 12px;
+    }
+
+    .panel.is-beat1 .setup-preview-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .setup-preview-tile {
+        min-height: 56px;
+    }
+
+    .option {
+        min-height: 56px;
+        padding: 10px;
+    }
+
+    .option__text {
+        font-size: 17px;
+    }
+
+    .options {
+        gap: 8px;
+    }
+
+    .question {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    button,
+    .btn {
+        font-size: 16px;
+        padding: 12px 24px;
+        min-height: 48px;
+    }
+
+    .btn-reset {
+        min-height: 48px;
+        font-size: 16px;
+    }
+
+    .completion-overlay h2 {
+        font-size: 28px;
+    }
+
+    .completion-overlay p {
+        font-size: 20px;
+    }
+
+    .overlay-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .overlay-actions button {
+        width: 100%;
+    }
+
+    /* Thumb reach: Back and Continue share the row at equal width. */
+    .panel__actions .btn-back,
+    .panel .panel__actions .btn--go,
+    .recap-actions button {
+        flex: 1 1 0;
+        min-height: 56px;
+    }
+
+    .recap-actions {
+        width: 100%;
+    }
+}
+
+@media (max-width: 520px) {
+    .filmstrip {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===== HIDE SCROLLBARS (scrolling still works) ===== */
+.examples,
+.options,
+.panel,
+body {
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* legacy Edge/IE */
+}
+
+.examples::-webkit-scrollbar,
+.options::-webkit-scrollbar,
+.panel::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+    /* WebKit/Blink */
+}
+
+*,
+*::before,
+*::after {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+}
+
+img {
+    -webkit-user-drag: none;
+    user-drag: none;
+}

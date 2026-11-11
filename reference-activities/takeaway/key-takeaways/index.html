@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Key takeaways</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main id="app" aria-labelledby="pageTitle">
+        <header class="activity-head">
+            <div>
+                <h1 id="pageTitle">Things to remember before your next drive</h1>
+                <p class="instruction">Move through the cards to review five ways to keep your attention on the road.</p>
+            </div>
+            <div class="progress" aria-label="Carousel progress">
+                <p class="progress__label"><span id="progressCurrent">1</span> of <span id="progressTotal">5</span></p>
+                <div class="progress__track"><div class="progress__fill" id="progressFill"></div></div>
+            </div>
+        </header>
+
+        <section class="carousel" aria-roledescription="carousel" aria-label="Driving safety key takeaways">
+            <div class="carousel__stage">
+                <div class="photo-frame" id="photoFrame">
+                    <img id="takeawayImage" alt="">
+                    <div class="photo-placeholder" id="photoPlaceholder" hidden>
+                        <span class="photo-placeholder__icon" aria-hidden="true">◌</span>
+                        <span>Photo placeholder</span>
+                    </div>
+                </div>
+
+                <article class="takeaway-card" id="takeawayCard" aria-live="polite">
+                    <p class="card-number" id="cardNumber">01</p>
+                    <h2 id="takeawayTitle"></h2>
+                    <p id="takeawayText"></p>
+                </article>
+            </div>
+
+            <div class="carousel__controls">
+                <button class="nav-button nav-button--previous" id="previousButton" type="button" aria-label="Back">
+                    <span>Back</span>
+                </button>
+                <div class="dots" id="dots" role="tablist" aria-label="Choose a takeaway"></div>
+                <button class="nav-button nav-button--next" id="nextButton" type="button">
+                    <span>Next</span>
+                </button>
+            </div>
+        </section>
+
+    </main>
+    <script src="state-store.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

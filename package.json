@@ -1,0 +1,8 @@
+{
+  "name": "vivint-storyline-web-objects",
+  "private": true,
+  "scripts": {
+    "test": "node scripts/run-reference-tests.mjs",
+    "check:media": "node scripts/check-media.mjs"
+  }
+}

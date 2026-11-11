@@ -1,0 +1,73 @@
+/* Reusable primitives extracted from the approved reference activities. */
+.vwo-shell {
+  width: 100%;
+  max-width: 1560px;
+  max-height: 720px;
+  margin: 0 auto;
+  padding: 0 60px;
+  color: var(--text-color);
+  font-family: var(--font-main);
+  font-size: 24px;
+  line-height: 1.4;
+}
+
+.vwo-button {
+  min-height: 52px;
+  padding: 10px 22px;
+  font: 700 20px/1.2 var(--font-main);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--primary-color);
+  color: #fff;
+  cursor: pointer;
+  transition: transform var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out), opacity var(--duration-fast) var(--ease-out);
+}
+
+.vwo-button--primary {
+  border: 0;
+  background: var(--primary-color);
+  color: #fff;
+}
+
+.vwo-button--secondary {
+  border: 1px solid var(--primary-color);
+  background: transparent;
+  color: var(--primary-deep);
+}
+
+.vwo-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.vwo-button:active:not(:disabled) {
+  transform: translateY(0) scale(0.985);
+  box-shadow: var(--shadow-active);
+}
+
+.vwo-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.vwo-button:focus-visible,
+.vwo-control:focus-visible {
+  outline: 3px solid var(--emphasis-color);
+  outline-offset: 4px;
+}
+
+.vwo-card {
+  padding: var(--space-md);
+  border: 1px solid var(--border-muted);
+  border-radius: var(--radius-md);
+  background: var(--card-bg);
+  box-shadow: var(--shadow-rest);
+}
+
+.vwo-feedback {
+  border-top: 2px solid var(--border-muted);
+  border-left: 4px solid var(--emphasis-color);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--overlay-bg);
+  color: var(--text-color);
+}

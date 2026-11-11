@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scan and act</title>
+  <link rel="stylesheet" href="styles.css?v=completion-overlay">
+</head>
+<body>
+  <main id="app" aria-describedby="introText">
+    <header class="activity-head">
+      <div>
+        <h1>Look further ahead to keep more choices open</h1>
+        <p id="introText" class="intro">Click every spot where something could move into your path in the next few seconds, then select Continue.</p>
+      </div>
+      <div class="meter" aria-label="Hotspot progress"><div class="meter__label"><strong id="progressCount">1</strong><span id="progressLabel">of 4 risks</span></div><div class="meter__track"><span id="progressFill"></span></div></div>
+    </header>
+
+    <section class="activity-grid" aria-live="polite">
+      <div class="scene-wrap">
+        <div class="scene" id="scene" role="img" aria-label="Driving scene placeholder">
+          <div class="scene__sky"></div><div class="scene__road"></div><div class="scene__lane lane-one"></div><div class="scene__lane lane-two"></div>
+          <div class="scene__side side-left"></div><div class="scene__side side-right"></div>
+          <div class="scene__car car-a"></div><div class="scene__car car-b"></div><div class="scene__car car-c"></div>
+          <div class="scene__placeholder" id="scenePlaceholder"><span id="scenePlaceholderTitle">Photo placeholder</span><br><small id="scenePlaceholderNote">Replace with approved scene image</small></div>
+          <div class="hotspot-layer" id="hotspotLayer"></div>
+          <div class="risk-label-layer" id="riskLabelLayer"></div>
+        </div>
+      </div>
+
+      <aside class="panel" aria-label="Scenario controls">
+        <p class="eyebrow" id="scenarioEyebrow"></p>
+        <h2 id="scenarioTitle"></h2>
+        <p id="scenarioPrompt" class="panel__copy"></p>
+        <div id="questionView" hidden>
+          <p class="question" id="questionText"></p>
+          <div class="options" id="options" role="radiogroup" aria-labelledby="questionText"></div>
+          <div class="question-feedback" id="feedback" role="status" aria-live="polite" hidden><p class="question-feedback__eyebrow" id="feedbackEyebrow"></p><p class="feedback__text" id="feedbackText"></p></div>
+          <div class="panel-actions"><button class="secondary" id="backBtn" type="button">Back</button><button class="primary" id="nextBtn" type="button" hidden>Next scenario</button></div>
+        </div>
+        <div id="scanView">
+          <div class="risk-feedback-list" id="riskFeedback" aria-live="polite" aria-label="Revealed risks"></div>
+          <button class="primary" id="checkBtn" type="button" disabled>Continue</button>
+        </div>
+      </aside>
+    </section>
+
+  </main>
+  <div class="completion-overlay" id="completion" aria-hidden="true" inert>
+      <div class="completion__content">
+        <h2 class="completion__lead">Stay one step ahead</h2>
+        <p class="completion__supporting">Every clue in these scenes came from one of four places to scan.</p>
+        <p class="completion__closing">Keep scanning. Ask what could change next, not just what is visible now. Try to anticipate in your mind what other drivers might do.</p>
+        <div class="completion__actions"><button class="secondary" id="retryBtn" type="button">Try again</button><button class="primary" id="reviewBtn" type="button">Review scenarios</button></div>
+      </div>
+  </div>
+  <script src="state-store.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
